@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use Illuminate\Validation\Rule;
 
 new class extends Component
 {
@@ -8,8 +9,19 @@ new class extends Component
     public $sectors = [];
     public $acceptTerms = false;
 
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|min:2|max:100',
+            'sectors' => 'required|array|min:1|max:5',
+            'acceptTerms' => 'accepted'
+        ];
+    }
+
     public function save()
     {
+        $this->validate();
+
         $this->reset();
     }
 };
@@ -18,6 +30,14 @@ new class extends Component
 <form wire:submit="save">
     <label for="name">Name:</label> 
     <input type="text" wire:model="name" id="name">
+    
+    <div>
+        @error('name') 
+        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
             
     <br>
     <br>
@@ -105,11 +125,27 @@ new class extends Component
         <option value="113">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Water</option>
     </select>
 
+    <div>
+        @error('sectors') 
+        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+
     <br>
     <br>
             
     <input type="checkbox" wire:model="acceptTerms" id="acceptTerms">
     <label for="acceptTerms">Agree to terms</label>
+    
+    <div>
+        @error('acceptTerms') 
+        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
 
     <br>
     <br>
