@@ -27,6 +27,6 @@ class Sector extends Model
     // Get the childrens children etc
     public function allChildren(): HasMany
     {
-        return $this->children()->with('childrenRecursive');
+        return $this->children()->with('allChildren');
     }
 }
