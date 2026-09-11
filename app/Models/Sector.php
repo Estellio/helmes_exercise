@@ -29,4 +29,9 @@ class Sector extends Model
     {
         return $this->children()->with('allChildren');
     }
+
+    public function formSubmissions()
+    {
+        return $this->belongsToMany(FormSubmission::class, 'form_submission_sector', 'sector_number', 'form_submission_id', 'sector_number', 'id');
+    }
 }

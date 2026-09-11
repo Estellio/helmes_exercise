@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use App\Models\Sector;
+use App\Models\FormSubmission;
 
 new class extends Component
 {
@@ -32,6 +33,16 @@ new class extends Component
     public function save()
     {
         $this->validate();
+
+        $formSubmission = FormSubmission::updateOrCreate(
+            ['session_id' => session()->getId()],
+            [
+                'name' => $this->name,
+                'accept_terms' => $this->acceptTerms
+            ]
+        );
+
+        $formSubmission->sectors()->sync($this->selectedSectors);
 
         $this->reset();
     }
@@ -89,4 +100,7 @@ new class extends Component
     <br>
             
     <button type="submit">Save</button>
+    <div>
+        {{ session()->getId() }}
+    </div>
 </form>
