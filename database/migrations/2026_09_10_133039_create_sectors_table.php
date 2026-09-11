@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sector_number')->unique();
+            $table->unsignedInteger('sector_number');
             $table->string('name');
-            $table->foreignId('parent_id')->nullable()->constrained('sectors')->cascadeOnDelete();
+            $table->unsignedInteger('parent_sector_number')->nullable();
+
+            // Declare unique index seperately
+            $table->unique('sector_number');
+            $table->foreign('parent_sector_number')->references('sector_number')->on('sectors')->nullOnDelete();
             $table->timestamps();
         });
     }
