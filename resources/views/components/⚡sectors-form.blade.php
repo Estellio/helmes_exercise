@@ -44,7 +44,11 @@ new class extends Component
 
         $formSubmission->sectors()->sync($this->selectedSectors);
 
-        $this->reset();
+        $this->reset([
+            'name',
+            'selectedSectors',
+            'acceptTerms'
+        ]);
     }
 };
 ?>
