@@ -19,6 +19,9 @@ new class extends Component
             ->with('allChildren')
             ->orderBy('sector_number')
             ->get();
+
+        // Call teh function to repopulate teh form fields with the saved data
+        $this->fetchSavedData();
     }
 
     protected function rules()
@@ -28,6 +31,23 @@ new class extends Component
             'selectedSectors' => 'required|array|min:1|max:5',
             'acceptTerms' => 'accepted'
         ];
+    }
+
+    public function fetchSavedData()
+    {
+        // Fetch the stored form data that matches the current session ID
+        $formSubmission = FormSubmission::with('sectors')
+            ->where('session_id', session()->getId())
+            ->first();
+
+        if ($formSubmission) {
+            $this->name = $formSubmission->name;
+            $this->acceptTerms = $formSubmission->accept_terms;
+
+            $this->selectedSectors = $formSubmission->sectors
+                ->pluck('sector_number')
+                ->toArray();
+        }
     }
 
     public function save()
@@ -44,11 +64,15 @@ new class extends Component
 
         $formSubmission->sectors()->sync($this->selectedSectors);
 
+        // Clear teh form values
         $this->reset([
             'name',
             'selectedSectors',
             'acceptTerms'
         ]);
+
+        // Refetch and populate the form fields
+        $this->fetchSavedData();
     }
 };
 ?>
