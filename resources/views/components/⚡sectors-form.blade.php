@@ -77,58 +77,70 @@ new class extends Component
 };
 ?>
 
-<form wire:submit="save">
-    <label for="name">Name:</label> 
-    <input type="text" wire:model="name" id="name">
-    
-    <div>
-        @error('name') 
-        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-            
-    <br>
-    <br>
-    
-    <label for="selectedSectors">Sectors:</label>
-    <select id="selectedSectors"  wire:model="selectedSectors" multiple size="8">
-        @foreach ($sectors as $sector)
-            @include('components.sector-option', [
-                'sector' => $sector,
-                'level' => 0
-            ])
-        @endforeach
-    </select>
+<form wire:submit="save" class="flex flex-col gap-y-4">
+    <div class="w-full min-w-[200px]">
+        <label for="name" class="block mb-2 text-sm">
+            Name:
+        </label>
 
-    <div>
-        @error('selectedSectors') 
-        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
-            {{ $message }}
+        <input type="text" wire:model="name" id="name"
+        class="w-full bg-gray-900 text-sm border border-slate-600 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-indigo-500 hover:border-indigo-400 shadow-sm focus:shadow" />
+        
+        <div>
+            @error('name') 
+                @include('components.validation-error', [
+                    'message' => $message
+                ])
+            @enderror
         </div>
-        @enderror
     </div>
 
-    <br>
-    <br>
-            
-    <input type="checkbox" wire:model="acceptTerms" id="acceptTerms">
-    <label for="acceptTerms">Agree to terms</label>
-    
-    <div>
-        @error('acceptTerms') 
-        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
-            {{ $message }}
+    <div class="w-full min-w-[200px]">
+        <label for="selectedSectors" class="block mb-2 text-sm">
+            Sectors:
+        </label>
+
+        <div class="w-full max-h-[400px] p-2 bg-gray-900 rounded-lg border border-slate-600 overflow-y-auto scrollbar-thumb-indigo-500/60 scrollbar-track-gray-700/10">
+            <ul class="space-y-1">
+                @foreach ($sectors as $sector)
+                    @include('components.sector-option', [
+                        'sector' => $sector,
+                        'level' => 0
+                    ])
+                @endforeach
+            </ul>
         </div>
-        @enderror
+
+        <div>
+            @error('selectedSectors') 
+                @include('components.validation-error', [
+                    'message' => $message
+                ])
+            @enderror
+        </div>
     </div>
 
-    <br>
-    <br>
-            
-    <button type="submit">Save</button>
     <div>
-        {{ session()->getId() }}
+        <input type="checkbox" wire:model="acceptTerms" id="acceptTerms"
+        class="shrink-0 size-4 bg-gray-600 border-line-3 rounded-sm shadow-2xs text-indigo-600 focus:ring-0 focus:ring-offset-0 checked:bg-indigo-600 checked:border-primary-checked">
+        
+        <label for="acceptTerms" class="ml-1 text-sm">
+            Agree to terms
+        </label>
+    
+        <div>
+            @error('acceptTerms') 
+                @include('components.validation-error', [
+                    'message' => $message
+                ])
+            @enderror
+        </div>
     </div>
+
+    <div class="flex justify-center">
+        <button type="submit" class="w-full text-white bg-indigo-600 hover:bg-indigo-500 shadow-xs leading-5 rounded-sm text-sm uppercase px-4 py-2.5">
+            Save
+        </button>
+    </div>
+            
 </form>
