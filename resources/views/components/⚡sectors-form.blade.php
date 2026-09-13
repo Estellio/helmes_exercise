@@ -73,6 +73,8 @@ new class extends Component
 
         // Refetch and populate the form fields
         $this->fetchSavedData();
+
+        session()->flash('success', 'Form submitted successfully!');
     }
 };
 ?>
@@ -142,5 +144,12 @@ new class extends Component
             Save
         </button>
     </div>
+
+    @if (session('success'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+        class="p-4 text-sm text-fg-success-strong rounded-base bg-success-soft border border-success-subtle" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
             
 </form>
