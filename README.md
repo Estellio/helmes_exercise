@@ -361,6 +361,10 @@ The `sectors-form` Livewire component handles loading the sectors, validating th
 
 ## Design Decisions
 
+### Technologies selection
+
+I decided to use Laravel and Livewire because I feel most comfortable with this stack, having worked with it extensively. It also provides a solid foundation for working with models and databases in a simple and efficient way. Additionally, I used Docker to make the project as easy as possible to set up on another computer. For the database I chose MySQL as it is yet again a technology I have experience with and feel comfortable using. For the UI, I used Tailwind CSS together with Flowbite components for elements such as error messages, alerts, and buttons.
+
 ### Sector selection
 
 The original `index.html` had a small select box for picking sectors. I decided early on that I wanted to change it in the later stages of development. I considered a few different approaches and eventually decided to turn it into a list with checkboxes. I made the container bigger so that more options would be visible at once and added checkboxes to make it easier to pick sectors and see which ones were already selected. This also allowed the sector hierarchy to remain clearly visible.
