@@ -90,7 +90,7 @@ When the form is submitted, Laravel validates the input and then uses the curren
 
 The selected sectors are synchronized with the `form_submission_sector` pivot table.
 
-Because the submission is associated with the session rather than a user account, the saved information remains editable while that session is still available. Starting a new session will be treated as a new form submission.
+Because the submission is associated with the session rather than a user account, the saved information remains editable while that session is still available.
 
 # Local Setup
 
@@ -156,7 +156,7 @@ cp .env.example .env
 
 The included Docker Compose configuration provides a MySQL 8.4 container.
 
-The darabase section currently matches the Docker configuration with default credentials.
+The database section currently matches the Docker configuration with default credentials.
 
 ```env
 DB_CONNECTION=mysql
@@ -359,9 +359,23 @@ compose.yaml
 
 The `sectors-form` Livewire component handles loading the sectors, validating the form, creating or updating submissions, synchronizing selected sectors, and repopulating the form with previously saved session data.
 
+## Design Decisions
+
+### Sector selection
+
+The original `index.html` had a small select box for picking sectors. I decided early on that I wanted to change it in the later stages of development. I considered a few different approaches and eventually decided to turn it into a list with checkboxes. I made the container bigger so that more options would be visible at once and added checkboxes to make it easier to pick sectors and see which ones were already selected. This also allowed the sector hierarchy to remain clearly visible.
+
+### Form sectors pivot table
+
+At first, I was between two options for storing the selected sectors: storing them in a JSON field within the form data table or using a pivot table to connect the sectors and form data tables. I went with the pivot table, as I felt it would result in a cleaner database structure. Having worked with JSON fields before, I have also found them to be slightly harder to work with at times. Additionally, since one sector can be connected to multiple form entries and one form entry can have multiple sectors, this seemed like the perfect case for a many-to-many relationship using a pivot table.
+
+### Reusable UI components
+
+I extracted some repeating UI elements into separate Blade components. This allowed me to keep the code in the main form file cleaner, make UI changes to these elements across all instances more easily, and avoid having too much repeated code.
+
 ## AI Usage
 
-AI tools were used during the development of this project to assist with tasks such as research, troubleshooting, code review, and documentation.
+AI tools were used during the development of this project to assist with tasks such as troubleshooting, UI and documentation.
 
 A more detailed description of how and where AI was used can be found here:
 

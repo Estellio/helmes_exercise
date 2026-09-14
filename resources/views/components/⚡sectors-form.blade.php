@@ -20,7 +20,7 @@ new class extends Component
             ->orderBy('sector_number')
             ->get();
 
-        // Call teh function to repopulate teh form fields with the saved data
+        // Call the function to repopulate the form fields with the saved data
         $this->fetchSavedData();
     }
 
@@ -54,6 +54,7 @@ new class extends Component
     {
         $this->validate();
 
+        // Check if an entry exists with the same session ID, if it does, update the existing one and if not then create it
         $formSubmission = FormSubmission::updateOrCreate(
             ['session_id' => session()->getId()],
             [
@@ -64,7 +65,7 @@ new class extends Component
 
         $formSubmission->sectors()->sync($this->selectedSectors);
 
-        // Clear teh form values
+        // Clear the form values
         $this->reset([
             'name',
             'selectedSectors',
